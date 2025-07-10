@@ -1,0 +1,24 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .calculator-card {
+    @apply bg-white/60 dark:bg-gray-800/60 backdrop-blur-md rounded-xl shadow-lg p-6 border border-gray-200 dark:border-gray-700 transition-all duration-300;
+  }
+  .input-field {
+    @apply rounded-md border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 shadow-sm focus:border-lab-blue focus:ring focus:ring-lab-blue focus:ring-opacity-50 transition;
+  }
+  .btn-primary {
+    @apply w-full bg-lab-blue text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-lab-blue dark:focus:ring-offset-gray-800 transition-colors;
+  }
+  .btn-secondary {
+    @apply w-full bg-gray-200 dark:bg-gray-600 text-gray-800 dark:text-gray-200 font-bold py-2 px-4 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-400 dark:focus:ring-offset-gray-800 transition-colors;
+  }
+  .result-wrapper {
+    @apply mt-6 p-4 bg-green-50 dark:bg-green-900/50 rounded-lg border border-green-200 dark:border-green-700 hidden;
+  }
+  .explanation-box {
+      @apply mt-2 text-xs text-gray-500 dark:text-gray-400 italic;
+  }
+}

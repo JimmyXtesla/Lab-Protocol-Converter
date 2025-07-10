@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="currentColor">
+  <path d="M50,10 A40,40 0 0,1 50,90 A40,40 0 0,1 50,10 M50,20 A30,30 0 0,0 50,80 A30,30 0 0,0 50,20 Z"/>
+  <path d="M45,30 L55,30 L55,70 L45,70 Z"/>
+  <path d="M30,45 L70,45 L70,55 L30,55 Z"/>
+</svg>

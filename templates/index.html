@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en"> 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lab Protocol Converter</title>
+    
+    <!-- Tailwind CSS CDN Script -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}" defer></script>
+    
+    <!-- Embedded custom styles -->
+    <style type="text/tailwindcss">
+        .explanation-box {
+            @apply mt-2 text-xs text-slate-500 italic;
+        }
+    </style>
+    
+    <style>
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #a8a29e; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #78716c; }
+    </style>
+</head>
+<body class="bg-slate-100 text-slate-800 font-sans">
+
+    <!-- ================================================================= -->
+    <!-- HEADER                                                          -->
+    <!-- ================================================================= -->
+    <header class="bg-gradient-to-r from-sky-500 to-indigo-600 text-white shadow-lg">
+        <nav class="container mx-auto px-4 sm:px-6 lg:px-8 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <img src="{{ url_for('static', filename='images/logo.svg') }}" class="h-8 w-8 text-white" alt="Logo">
+                <h1 class="text-xl font-bold">Lab Protocol Converter</h1>
+            </div>
+        </nav>
+    </header>
+
+    <!-- ================================================================= -->
+    <!-- MAIN CONTENT GRID                                               -->
+    <!-- ================================================================= -->
+    <main class="container mx-auto p-4 sm:p-6 lg:p-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        
+        <!-- ================================================================= -->
+        <!-- Calculator: PCR Master Mix (Fuchsia Theme)                        -->
+        <!-- ================================================================= -->
+        <div id="pcr-card" class="bg-white rounded-xl shadow-lg shadow-fuchsia-500/20 p-6 md:col-span-2 lg:col-span-3">
+            <h2 class="text-2xl font-bold mb-4 text-fuchsia-600">PCR Master Mix Calculator</h2>
+            <form id="pcr-form" class="space-y-4">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label for="pcr-reactions" class="block text-sm font-medium">Number of Reactions</label>
+                        <input type="number" id="pcr-reactions" value="10" required class="mt-1 block w-full rounded-md border-slate-300 bg-slate-50 shadow-sm focus:border-fuchsia-500 focus:ring-fuchsia-500">
+                    </div>
+                    <div>
+                        <label for="pcr-volume" class="block text-sm font-medium">Final Volume per Reaction (µL)</label>
+                        <input type="number" id="pcr-volume" value="25" required class="mt-1 block w-full rounded-md border-slate-300 bg-slate-50 shadow-sm focus:border-fuchsia-500 focus:ring-fuchsia-500">
+                    </div>
+                </div>
+                
+                <h3 class="text-lg font-semibold pt-4 border-t border-slate-300">Components</h3>
+                <div id="pcr-components" class="space-y-3">
+                    <!-- Dynamic PCR component rows will be injected here by JS -->
+                </div>
+                <button type="button" id="add-pcr-component" class="w-full bg-slate-200 text-slate-800 font-bold py-2 px-4 rounded-lg hover:bg-slate-300">Add Component</button>
+                <button type="submit" class="w-full bg-fuchsia-600 text-white font-bold py-2.5 px-4 rounded-lg hover:bg-fuchsia-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-fuchsia-500">Calculate Master Mix</button>
+            </form>
+            <div id="pcr-result-wrapper" class="mt-6 p-4 bg-green-50 rounded-lg border border-green-200 hidden"></div>
+        </div>
+
+        <!-- ================================================================= -->
+        <!-- Calculator: Buffer Dilution (Sky Blue Theme)                       -->
+        <!-- ================================================================= -->
+        <div id="dilution-card" class="bg-white rounded-xl shadow-lg shadow-sky-500/20 p-6">
+            <h2 class="text-2xl font-bold mb-4 text-sky-600">Buffer Dilution (C1V1=C2V2)</h2>
+            <form id="dilution-form" class="space-y-4">
+                <div>
+                    <label for="dilution-c1" class="block text-sm font-medium">Stock Concentration (C1)</label>
+                    <input type="number" step="any" id="dilution-c1" placeholder="e.g., 10" required class="mt-1 block w-full rounded-md border-slate-300 bg-slate-50 shadow-sm focus:border-sky-500 focus:ring-sky-500">
+                </div>
+                <div>
+                    <label for="dilution-c2" class="block text-sm font-medium">Final Concentration (C2)</label>
+                    <input type="number" step="any" id="dilution-c2" placeholder="e.g., 1" required class="mt-1 block w-full rounded-md border-slate-300 bg-slate-50 shadow-sm focus:border-sky-500 focus:ring-sky-500">
+                </div>
+                <div>
+                    <label for="dilution-v2" class="block text-sm font-medium">Final Volume (V2)</label>
+                    <input type="number" step="any" id="dilution-v2" placeholder="e.g., 1000" required class="mt-1 block w-full rounded-md border-slate-300 bg-slate-50 shadow-sm focus:border-sky-500 focus:ring-sky-500">
+                </div>
+                <button type="submit" class="w-full bg-sky-600 text-white font-bold py-2.5 px-4 rounded-lg hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500">Calculate Required Stock Volume (V1)</button>
+            </form>
+            <div id="dilution-result-wrapper" class="mt-6 p-4 bg-green-50 rounded-lg border border-green-200 hidden"></div>
+        </div>
+
+        <!-- ================================================================= -->
+        <!-- Calculator: DNA Concentration (Emerald Theme)                     -->
+        <!-- ================================================================= -->
+        <div id="dna-conc-card" class="bg-white rounded-xl shadow-lg shadow-emerald-500/20 p-6">
+            <h2 class="text-2xl font-bold mb-4 text-emerald-600">DNA Concentration Converter</h2>
+            <form id="dna-conc-form" class="space-y-4">
+                <div>
+                    <label for="dna-conc" class="block text-sm font-medium">Concentration (ng/µL)</label>
+                    <input type="number" step="any" id="dna-conc" placeholder="e.g., 100" required class="mt-1 block w-full rounded-md border-slate-300 bg-slate-50 shadow-sm focus:border-emerald-500 focus:ring-emerald-500">
+                </div>
+                <div>
+                    <label for="dna-length" class="block text-sm font-medium">DNA Length (bp)</label>
+                    <input type="number" step="any" id="dna-length" placeholder="e.g., 500" required class="mt-1 block w-full rounded-md border-slate-300 bg-slate-50 shadow-sm focus:border-emerald-500 focus:ring-emerald-500">
+                </div>
+                <button type="submit" class="!mt-12 w-full bg-emerald-600 text-white font-bold py-2.5 px-4 rounded-lg hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500">Convert to pmol/µL</button>
+            </form>
+            <div id="dna-conc-result-wrapper" class="mt-6 p-4 bg-green-50 rounded-lg border border-green-200 hidden"></div>
+        </div>
+
+        <!-- ================================================================= -->
+        <!-- Calculator: µL to mmol (Orange Theme)                             -->
+        <!-- ================================================================= -->
+        <div id="ul-to-mmol-card" class="bg-white rounded-xl shadow-lg shadow-orange-500/20 p-6">
+            <h2 class="text-2xl font-bold mb-4 text-orange-600">Volume to Moles Converter</h2>
+            <form id="ul-to-mmol-form" class="space-y-4">
+                <div>
+                    <label for="ul-volume" class="block text-sm font-medium">Volume (µL)</label>
+                    <input type="number" step="any" id="ul-volume" placeholder="e.g., 5" required class="mt-1 block w-full rounded-md border-slate-300 bg-slate-50 shadow-sm focus:border-orange-500 focus:ring-orange-500">
+                </div>
+                <div>
+                    <label for="ul-molarity" class="block text-sm font-medium">Stock Molarity (M, mol/L)</label>
+                    <input type="number" step="any" id="ul-molarity" placeholder="e.g., 0.5" required class="mt-1 block w-full rounded-md border-slate-300 bg-slate-50 shadow-sm focus:border-orange-500 focus:ring-orange-500">
+                </div>
+                <button type="submit" class="!mt-12 w-full bg-orange-600 text-white font-bold py-2.5 px-4 rounded-lg hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500">Convert to mmol</button>
+            </form>
+            <div id="ul-to-mmol-result-wrapper" class="mt-6 p-4 bg-green-50 rounded-lg border border-green-200 hidden"></div>
+        </div>
+    </main>
+</body>
+</html>
